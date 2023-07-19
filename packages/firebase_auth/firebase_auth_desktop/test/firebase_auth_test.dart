@@ -245,8 +245,11 @@ void main() {
     group('checkActionCode()', () {
       test('should call delegate method', () async {
         // Necessary as we otherwise get a "null is not a Future<void>" error
-        when(mockAuthPlatform.checkActionCode(any))
-            .thenAnswer((i) async => ActionCodeInfo(data: {}, operation: 0));
+        when(mockAuthPlatform.checkActionCode(any)).thenAnswer((i) async =>
+            ActionCodeInfo(
+                data: ActionCodeInfoData(
+                    email: 'e@gmail.com', previousEmail: 'e@gmail.com'),
+                operation: ActionCodeInfoOperation.emailSignIn));
 
         await auth.checkActionCode(kMockActionCode);
         verify(mockAuthPlatform.checkActionCode(kMockActionCode));
@@ -830,7 +833,7 @@ class MockFirebaseAuth extends Mock
 
   @override
   FirebaseAuthPlatform setInitialValues({
-    Map<String, dynamic>? currentUser,
+    PigeonUserDetails? currentUser,
     String? languageCode,
   }) {
     return super.noSuchMethod(
@@ -1024,7 +1027,7 @@ class FakeFirebaseAuthPlatform extends Fake
 
   @override
   FirebaseAuthPlatform setInitialValues({
-    Map<String, dynamic>? currentUser,
+    PigeonUserDetails? currentUser,
     String? languageCode,
   }) {
     return this;
@@ -1035,7 +1038,7 @@ class MockUserPlatform extends Mock
     with MockPlatformInterfaceMixin
     implements TestUserPlatform {
   MockUserPlatform(FirebaseAuthPlatform auth, Map<String, dynamic> _user) {
-    TestUserPlatform(auth, _user);
+    TestUserPlatform(auth, PigeonUserDetails.decode(_user));
   }
 }
 
@@ -1085,7 +1088,7 @@ class TestFirebaseAuthPlatform extends FirebaseAuthPlatform {
 
   @override
   FirebaseAuthPlatform setInitialValues({
-    Map<String, dynamic>? currentUser,
+    PigeonUserDetails? currentUser,
     String? languageCode,
   }) {
     return this;
@@ -1153,7 +1156,7 @@ class TestAuthProvider extends AuthProvider {
 }
 
 class TestUserPlatform extends UserPlatform {
-  TestUserPlatform(FirebaseAuthPlatform auth, Map<String, dynamic> data)
+  TestUserPlatform(FirebaseAuthPlatform auth, PigeonUserDetails data)
       : super(auth, TestMultiFactor(auth), data);
 }
 

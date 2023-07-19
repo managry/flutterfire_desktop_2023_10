@@ -16,7 +16,7 @@ import 'utils/desktop_utils.dart';
 class User extends UserPlatform {
   // ignore: public_member_api_docs
   User(FirebaseAuthPlatform auth, this._user)
-      : super(auth, MultiFactorDesktop(auth), _user.toMap());
+      : super(auth, MultiFactorDesktop(auth), PigeonUserDetails.decode(_user));
 
   final auth_dart.User _user;
 
@@ -44,7 +44,7 @@ class User extends UserPlatform {
     try {
       final idTokenResult = await _user.getIdTokenResult(forceRefresh);
 
-      return IdTokenResult(idTokenResult.toMap);
+      return IdTokenResult(PigeonIdTokenResult.decode(idTokenResult));
     } catch (e) {
       throw getFirebaseAuthException(e);
     }
@@ -98,7 +98,9 @@ class User extends UserPlatform {
 
   @override
   List<UserInfo> get providerData {
-    return _user.providerData.map((user) => UserInfo(user.toMap())).toList();
+    return _user.providerData
+        .map((user) => UserInfo.fromJson(user.toMap()))
+        .toList();
   }
 
   @override

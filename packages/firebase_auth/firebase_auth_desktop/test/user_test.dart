@@ -31,7 +31,7 @@ void main() {
 
   FirebaseAuth? auth;
 
-  const kMockIdTokenResult = <String, dynamic>{
+  final kMockIdTokenResult = PigeonUserDetails.decode({
     'token': '12345',
     'expirationTimestamp': 123456,
     'authTimestamp': 1234567,
@@ -40,14 +40,14 @@ void main() {
     'claims': <dynamic, dynamic>{
       'claim1': 'value1',
     },
-  };
+  });
 
   final kMockCreationTimestamp =
       DateTime.now().subtract(const Duration(days: 2)).millisecondsSinceEpoch;
   final kMockLastSignInTimestamp =
       DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch;
 
-  final kMockUser = <String, dynamic>{
+  final kMockUser = PigeonUserDetails.decode({
     'isAnonymous': true,
     'emailVerified': false,
     'uid': '42',
@@ -65,7 +65,7 @@ void main() {
         'email': 'test@example.com',
       },
     ],
-  };
+  });
 
   MockUserPlatform? mockUserPlatform;
   MockUserCredentialPlatform? mockUserCredPlatform;
@@ -84,7 +84,7 @@ void main() {
   var mockAuthPlatform = MockFirebaseAuth();
 
   group('$User', () {
-    Map<String, dynamic>? user;
+    PigeonUserDetails? user;
 
     // used to generate a unique application name for each test
     var testCount = 0;
@@ -165,8 +165,8 @@ void main() {
     });
 
     test('getIdTokenResult()', () async {
-      when(mockUserPlatform!.getIdTokenResult(any))
-          .thenAnswer((_) async => IdTokenResult(kMockIdTokenResult));
+      when(mockUserPlatform!.getIdTokenResult(any)).thenAnswer((_) async =>
+          IdTokenResult(PigeonIdTokenResult.decode(kMockIdTokenResult)));
 
       final idTokenResult = await auth!.currentUser!.getIdTokenResult(true);
 
@@ -384,7 +384,7 @@ class MockFirebaseAuth extends Mock
 
   @override
   FirebaseAuthPlatform setInitialValues({
-    Map<String, dynamic>? currentUser,
+    PigeonUserDetails? currentUser,
     String? languageCode,
   }) {
     return super.noSuchMethod(
@@ -401,7 +401,7 @@ class MockFirebaseAuth extends Mock
 class MockUserPlatform extends Mock
     with MockPlatformInterfaceMixin
     implements TestUserPlatform {
-  MockUserPlatform(FirebaseAuthPlatform auth, Map<String, dynamic> _user) {
+  MockUserPlatform(FirebaseAuthPlatform auth, PigeonUserDetails _user) {
     TestUserPlatform(auth, _user);
   }
 
@@ -561,7 +561,7 @@ class TestFirebaseAuthPlatform extends FirebaseAuthPlatform {
 
   @override
   FirebaseAuthPlatform setInitialValues({
-    Map<String, dynamic>? currentUser,
+    PigeonUserDetails? currentUser,
     String? languageCode,
   }) {
     return this;
@@ -569,7 +569,7 @@ class TestFirebaseAuthPlatform extends FirebaseAuthPlatform {
 }
 
 class TestUserPlatform extends UserPlatform {
-  TestUserPlatform(FirebaseAuthPlatform auth, Map<String, dynamic> data)
+  TestUserPlatform(FirebaseAuthPlatform auth, PigeonUserDetails data)
       : super(auth, TestMultiFactor(auth), data);
 }
 
