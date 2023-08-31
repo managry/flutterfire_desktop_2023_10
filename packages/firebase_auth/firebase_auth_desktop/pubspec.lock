@@ -179,11 +179,10 @@ packages:
   firebase_auth_platform_interface:
     dependency: "direct main"
     description:
-      name: firebase_auth_platform_interface
-      sha256: "19f8d0762544b72471b85bb56469448c3dc9f98b8b8574f744873ec18e04e18c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.17.0"
+      path: "../../../../../packages/firebase_auth_platform_interface"
+      relative: true
+    source: path
+    version: "6.17.0-flipper-version"
   firebase_auth_web:
     dependency: transitive
     description:
