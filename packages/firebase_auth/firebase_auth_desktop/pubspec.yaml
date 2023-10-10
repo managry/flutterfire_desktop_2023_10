@@ -9,7 +9,10 @@ environment:
   flutter: '>=1.20.0'
 
 dependencies:
-  desktop_webview_auth: ^0.0.8
+  desktop_webview_auth:
+    git:
+      url: git@github.com:andyshephard/flutter_desktop_webview_auth.git
+      ref: main
   firebase_auth: 4.8.0
   firebase_auth_dart:
     git:
