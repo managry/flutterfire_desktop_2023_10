@@ -8,7 +8,11 @@ environment:
   sdk: '>=2.15.0 <3.0.0'
 
 dependencies:
-  firebase_core_dart: ^1.0.1
+  firebase_core_dart:
+    git:
+      url: git@github.com:managry/flutterfire_desktop_2023_10.git
+      ref: main
+      path: packages/firebase_core/firebase_core_dart
   firebaseapis:
   googleapis_auth: ^1.1.0
   http:
