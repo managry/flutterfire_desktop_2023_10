@@ -19,7 +19,11 @@ dependencies:
   firebase_auth_platform_interface: ^6.17.0-flipper-version
   # firebase_core: ^2.16.0
   firebase_core: ^2.16.0
-  firebase_core_dart: ^1.0.1
+  firebase_core_dart:
+    git:
+      url: git@github.com:managry/flutterfire_desktop_2023_10.git
+      ref: main
+      path: packages/firebase_auth/firebase_core_dart
   flutter:
     sdk: flutter
   meta: ^1.3.0
